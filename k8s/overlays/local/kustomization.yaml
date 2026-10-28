@@ -1,0 +1,131 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+resources:
+  - ../../base
+
+# Local: Rancher Desktop (K3s) with Traefik ingress, localhost hostnames
+patches:
+  - target:
+      kind: Deployment
+      name: htx-backend
+    patch: |
+      - op: replace
+        path: /spec/replicas
+        value: 1
+  - target:
+      kind: Deployment
+      name: htx-frontend
+    patch: |
+      - op: replace
+        path: /spec/replicas
+        value: 1
+  - target:
+      kind: StatefulSet
+      name: htx-keycloak
+    patch: |
+      - op: replace
+        path: /spec/replicas
+        value: 0
+  - target:
+      kind: Ingress
+      name: htx-frontend-ingress
+    patch: |
+      - op: replace
+        path: /metadata/annotations
+        value:
+          kubernetes.io/ingress.class: traefik
+      - op: replace
+        path: /spec/rules/0/host
+        value: htx.local
+  - target:
+      kind: Ingress
+      name: htx-backend-ingress
+    patch: |
+      - op: replace
+        path: /metadata/annotations
+        value:
+          kubernetes.io/ingress.class: traefik
+  - target:
+      kind: Ingress
+      name: htx-keycloak-ingress
+    patch: |
+      $patch: delete
+      apiVersion: networking.k8s.io/v1
+      kind: Ingress
+      metadata:
+        name: htx-keycloak-ingress
+  - target:
+      kind: ConfigMap
+      name: htx-config
+    patch: |
+      - op: replace
+        path: /data/AUTH_ENABLED
+        value: "false"
+      - op: replace
+        path: /data/CORS_ORIGINS
+        value: "http://htx.local"
+      - op: replace
+        path: /data/KEYCLOAK_ISSUER
+        value: ""
+      - op: replace
+        path: /data/KEYCLOAK_JWKS_URL
+        value: ""
+  - target:
+      kind: Secret
+      name: htx-secrets
+    patch: |
+      - op: replace
+        path: /stringData/GITHUB_BASE_URL
+        value: ""
+      - op: replace
+        path: /stringData/GITHUB_APP_ID
+        value: ""
+      - op: replace
+        path: /stringData/GITHUB_APP_INSTALLATION_ID
+        value: ""
+      - op: replace
+        path: /stringData/GITHUB_APP_PRIVATE_KEY
+        value: ""
+      - op: replace
+        path: /stringData/GITHUB_REPO
+        value: ""
+  # Local: use locally built images, never pull from registry
+  - target:
+      kind: Deployment
+      name: htx-backend
+    patch: |
+      - op: replace
+        path: /spec/template/spec/containers/0/imagePullPolicy
+        value: Never
+  - target:
+      kind: Deployment
+      name: htx-frontend
+    patch: |
+      - op: replace
+        path: /spec/template/spec/containers/0/imagePullPolicy
+        value: Never
+  - target:
+      kind: StatefulSet
+      name: htx-keycloak
+    patch: |
+      - op: replace
+        path: /spec/template/spec/containers/0/imagePullPolicy
+        value: Never
+      - op: replace
+        path: /spec/template/spec/initContainers/0/imagePullPolicy
+        value: Never
+
+images:
+  - name: htx-backend
+    newName: htx-backend
+    newTag: local
+  - name: htx-frontend
+    newName: htx-frontend
+    newTag: local
+  - name: htx-keycloak
+    newName: htx-keycloak
+    newTag: local
+  - name: nats
+    newName: nats
+    newTag: alpine

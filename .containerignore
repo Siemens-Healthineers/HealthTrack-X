@@ -1,0 +1,38 @@
+# .containerignore – shared by container builds
+# (Podman reads .containerignore; Docker reads .dockerignore)
+
+# Version control
+.git
+.gitignore
+
+# IDE / Editor
+.vscode
+.idea
+*.swp
+*.swo
+*~
+
+# Node / Frontend
+frontend/node_modules
+frontend/dist
+frontend/.vite
+
+# Python / Backend
+backend/__pycache__
+backend/**/__pycache__
+backend/cache
+backend/logs
+backend/*.pyc
+**/__pycache__
+*.pyc
+
+# OS files
+Thumbs.db
+.DS_Store
+
+# Documentation / Scripts (not needed in images)
+compliance
+scripts
+*.md
+*.bat
+LICENSE

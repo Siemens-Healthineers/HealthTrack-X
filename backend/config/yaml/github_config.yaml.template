@@ -1,0 +1,38 @@
+# ============================================
+# GitHub Configuration Template
+# ============================================
+# Copy this file to github_config.yaml and fill in your values.
+# Sensitive data (tokens, private keys) MUST be configured via
+# the Settings UI - they cannot be set directly in this file.
+# ============================================
+
+github:
+  # Repository in format: owner/repository-name
+  repository: ""
+  
+  # Branch to use for commits
+  branch: main
+  
+  # GitHub base URL (leave empty for github.com, or set for GitHub Enterprise)
+  base_url: ""
+
+authentication:
+  # Authentication method: "token" or "app"
+  method: app
+  
+  # For GitHub App authentication:
+  app_id: ""
+  installation_id: ""
+  private_key: "[Configure via Settings UI]"
+  
+  # For Token authentication:
+  # token: "[Configure via Settings UI]"
+
+# ============================================
+# After Configuration
+# ============================================
+# 1. Edit the values above
+# 2. Open the Settings UI in the application
+# 3. Configure sensitive data (tokens/keys)
+# 4. Save - this will create the encrypted configuration
+# 5. This template can be deleted after setup

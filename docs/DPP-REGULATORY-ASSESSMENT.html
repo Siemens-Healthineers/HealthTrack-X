@@ -1,0 +1,106 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<title>HealthTrack-X - DPP-Regulierungsbewertung</title>
+<style>
+@page { size: A4 landscape; margin: 13mm 12mm 14mm; }
+:root { --ink:#17212b; --muted:#52606d; --line:#cbd5df; --blue:#155e75; --blue-soft:#e6f4f7; --green:#166534; --green-soft:#dcfce7; --amber:#92400e; --amber-soft:#ffedd5; --red:#991b1b; --red-soft:#fee2e2; }
+* { box-sizing:border-box; }
+body { font-family: Arial, Helvetica, sans-serif; color:var(--ink); font-size:9.2pt; line-height:1.3; margin:0; }
+h1 { color:var(--blue); font-size:24pt; margin:0 0 5mm; }
+h2 { color:var(--blue); font-size:14pt; margin:6mm 0 2.5mm; border-bottom:1px solid var(--line); padding-bottom:1.5mm; }
+h3 { font-size:10.5pt; margin:4mm 0 1mm; }
+p { margin:0 0 2.5mm; }
+.meta { color:var(--muted); font-size:8.5pt; margin-bottom:5mm; }
+.summary { border:1.2pt solid var(--blue); background:var(--blue-soft); padding:4mm; margin-bottom:4mm; }
+.summary strong { color:var(--blue); }
+.metrics { display:flex; gap:3mm; margin:3mm 0 4mm; }
+.metric { flex:1; border:1px solid var(--line); padding:2.5mm; background:white; }
+.metric b { display:block; font-size:16pt; color:var(--blue); }
+.metric span { color:var(--muted); font-size:8pt; }
+.legend span { display:inline-block; padding:1mm 2mm; margin-right:2mm; border-radius:2mm; font-size:8pt; font-weight:bold; }
+.good { background:var(--green-soft); color:var(--green); }
+.partial { background:var(--amber-soft); color:var(--amber); }
+.gap { background:var(--red-soft); color:var(--red); }
+table { width:100%; border-collapse:collapse; table-layout:fixed; margin:2mm 0 4mm; }
+th { background:#e9eef2; color:#20313d; text-align:left; font-size:8.2pt; padding:2mm; border:1px solid var(--line); }
+td { vertical-align:top; padding:2mm; border:1px solid var(--line); font-size:8pt; }
+tr { page-break-inside:avoid; }
+.col-req { width:17%; } .col-impl { width:29%; } .col-status { width:11%; } .col-gap { width:31%; } .col-ref { width:12%; }
+.status { font-weight:bold; }
+ul { margin:1mm 0 0 4mm; padding:0; }
+li { margin-bottom:0.8mm; }
+.priority { border-left:3pt solid var(--amber); padding:2mm 3mm; margin:2mm 0; background:#fffaf2; }
+.priority strong { color:var(--amber); }
+.small { color:var(--muted); font-size:7.8pt; }
+.footer { margin-top:5mm; border-top:1px solid var(--line); padding-top:2mm; color:var(--muted); font-size:7.5pt; }
+.page-break { page-break-before:always; }
+.nowrap { white-space:nowrap; }
+</style>
+</head>
+<body>
+<h1>HealthTrack-X: DPP-Regulierungsbewertung</h1>
+<div class="meta">Technische Ist-Analyse des Repository-Stands | Stand: 17. September 2026 | Bewertungsgegenstand: Plattform, Backend, NX-Export und DPP-Datenaustausch</div>
+
+<div class="summary">
+<strong>Gesamtbewertung:</strong> HealthTrack-X ist als technische DPP-Basis <strong>substanziell vorbereitet</strong>, erfüllt aber derzeit nicht nachweisbar alle regulatorischen Anforderungen für einen produktiven, verbindlichen Digital Product Passport. Besonders gut abgedeckt sind strukturierte Produktdaten, Material- und Baugruppeninformationen, AAS/JSON-LD-Interoperabilität, CRMA-Anreicherung, Versionierung und ein grundsätzlich vorhandener OIDC/Keycloak-Zugriffsschutz. Die Freigabe als produktiver DPP-Dienst setzt vor allem verpflichtende Authentifizierung, sichere Transportwege, fein granulare Datenrechte, belastbare Identität/Resolver, signierte beziehungsweise revisionssichere Nachweise und produktspezifische Pflichtfeldsets voraus.
+</div>
+<div class="metrics">
+  <div class="metric"><b>Technische Reife: mittel</b><span>Viele Kernbausteine vorhanden, mehrere produktionskritische Kontrollen offen</span></div>
+  <div class="metric"><b>Regulatorischer Status: teilweise</b><span>ESPR-Rahmen unterstützt; konkrete Pflichten hängen vom delegierten Rechtsakt ab</span></div>
+  <div class="metric"><b>Höchstes Risiko: Zugriff &amp; Vertrauen</b><span>Auth optional, NX über HTTP, EDC-TLS-Prüfung deaktiviert</span></div>
+</div>
+<div class="legend"><span class="good">Gut abgedeckt</span><span class="partial">Teilweise / konfigurationsabhängig</span><span class="gap">Gap / Nachweis fehlt</span></div>
+
+<h2>Gegenüberstellung: Anforderung und Einschätzung</h2>
+<table>
+<colgroup><col class="col-req"><col class="col-impl"><col class="col-status"><col class="col-gap"><col class="col-ref"></colgroup>
+<thead><tr><th>Anforderung / Kontrollziel</th><th>Vorhandene Umsetzung in HealthTrack-X</th><th>Einschätzung</th><th>Gap, Risiko oder Nachweisbedarf</th><th>Technische Belege</th></tr></thead>
+<tbody>
+<tr><td><b>Eindeutige Produktidentität</b><br>Produkt, Modell, Version und Beziehung müssen eindeutig auflösbar sein.</td><td>Produkt-IDs, NX-IDs, GitHub-Blob-/Raw-URLs, AAS-IDs und Parent-Child-BOM-Strukturen.</td><td class="status partial">Teilweise</td><td>Repository-/Branch-gebundene URLs sind kein unabhängiger, dauerhafter DPP-Resolver. Betreiber-, Hersteller- und Anlagen-IDs sind nicht einheitlich als eigenes Identitätsmodell erkennbar.</td><td>main.py; export_nx_to_htx.py</td></tr>
+<tr><td><b>Daten-Carrier und Resolver</b><br>QR/NFC/RFID oder vergleichbare maschinenlesbare Verknüpfung zum DPP.</td><td>API- und Web-Endpunkte sind vorhanden; NX öffnet nach Export die Strukturansicht.</td><td class="status gap">Gap</td><td>Kein nachgewiesener QR-/NFC-Carrier, keine Resolver-Strategie bei Anbieter-, Repository- oder Produktwechsel und kein dokumentiertes Availability-/Fallback-Konzept.</td><td>NX-Export; API-Routen</td></tr>
+<tr><td><b>Maschinenlesbare und interoperable Daten</b><br>Strukturiert, standardbasiert, exportierbar und ohne Vendor Lock-in.</td><td>JSON, JSON-LD, AAS/BaSyx, IDTA-Semantik sowie EDC-/Tractus-X-Anbindung.</td><td class="status good">Gut abgedeckt</td><td>Semantische IDs, Kontextversionen, Pflichtfelder und Konformität je Produktgruppe müssen mit verbindlichen Testfällen nachgewiesen werden.</td><td>main.py; edc_connector.py</td></tr>
+<tr><td><b>Materialzusammensetzung und Stoffinformationen</b></td><td>CAS-Nummern, chemische Zusammensetzung, Elementanteile, Materialklassifikation und CRMA-Prüfung.</td><td class="status partial">Teilweise</td><td>Quellen, Mess-/Berechnungsmethode, Zeitstempel, Konfidenz, Grenzwerte und produktspezifische Gefahrstoffanforderungen sind nicht einheitlich verpflichtend modelliert.</td><td>crma_checker.py; main.py</td></tr>
+<tr><td><b>Nachhaltigkeits- und Carbon-Daten</b></td><td>Recyclinganteil, CO2-Äquivalent und Berechnungsmethode; AAS-Sustainability-Submodelle.</td><td class="status partial">Teilweise</td><td>Keine ausreichende Evidenz für Prüfstatus, Systemgrenzen, Norm, Datensatzversion, Bilanzierungszeitraum oder unabhängige Verifizierung.</td><td>main.py</td></tr>
+<tr><td><b>BOM, Komponenten und Lebenszyklus</b></td><td>Siemens-NX-Extraktor, Hierarchie, Mengen, Masse, Volumen, Dichte, Oberfläche und Materialattribute.</td><td class="status partial">Teilweise</td><td>Reparatur, Demontage, Wiederverwendung, Recyclinganleitung, Ersatzteile, Sicherheits- und Rückrufinformationen sind nicht als vollständiges Lifecycle-Modell erkennbar.</td><td>export_nx_to_htx.py</td></tr>
+<tr><td><b>Authentifizierung</b><br>Nur berechtigte Teilnehmer erhalten geschützte DPP-Funktionen.</td><td>Keycloak/OIDC, Bearer-JWT, RS256, JWKS, Issuer-/Audience-Prüfung und Rollenextraktion.</td><td class="status partial">Konfigurationsabhängig</td><td><b>AUTH_ENABLED ist standardmäßig false.</b> Ohne harte Produktionsprüfung kann die gesamte API ohne Authentifizierung betrieben werden.</td><td>auth.py</td></tr>
+<tr><td><b>Autorisierung und Zugriffsebenen</b><br>Unterschiedliche Rechte für Hersteller, Lieferanten, Behörden, Recycler und Öffentlichkeit.</td><td>Rollen viewer, editor, admin, service; Admin-Schutz und Benutzerfreigabe über Keycloak.</td><td class="status partial">Teilweise</td><td>Keine nachgewiesene fein granulare Autorisierung nach Organisation, Produkt, Submodell, Zweck oder Feld. Sensible Lieferketteninformationen könnten zu breit sichtbar sein.</td><td>auth.py; main.py</td></tr>
+<tr><td><b>Sichere Übertragung und Vertrauensbeziehung</b></td><td>GitHub-App-/Token-Anbindung und EDC-API-Konfiguration sind vorhanden.</td><td class="status gap">Kritischer Gap</td><td>NX sendet an <code>http://htx.local</code> ohne sichtbaren Token. EDC verwendet <code>verify=False</code>. Damit fehlen in diesen Pfaden belastbare Vertraulichkeit und Serverauthentizität.</td><td>export_nx_to_htx.py; edc_connector.py</td></tr>
+<tr><td><b>Integrität, Provenienz und Authentizität</b></td><td>Git-Versionierung, SHA-Konflikterkennung, Änderungs-Diff, Preview und Approval vor Commit.</td><td class="status partial">Teilweise</td><td>Kein nachgewiesenes signiertes DPP/AAS, keine Trust Chain, keine Feld-Provenienz mit Quelle/Methode/Zeitstempel und keine unveränderliche Auditspur. <code>requested_by</code> darf nicht aus dem Client-Request stammen.</td><td>main.py</td></tr>
+<tr><td><b>Datenqualität und Pflichtfelder</b></td><td>Dynamische Pydantic-/YAML-Schemata, Typen, Bereiche, Pattern und Enum-Prüfungen.</td><td class="status partial">Teilweise</td><td>Felder sind grundsätzlich optional. Je Produktgruppe fehlen verbindliche Pflichtfeldsets, Vollständigkeitsstatus und fachliche Plausibilitätsregeln vor Veröffentlichung.</td><td>schema_validator.py</td></tr>
+<tr><td><b>Dataspace- und Vertragszugriff</b></td><td>EDC-Kataloge, Policies, Vertragsdefinitionen, Negotiations und Transfers.</td><td class="status partial">Teilweise</td><td>Technische EDC-Funktionalität ersetzt keine vollständige Identitäts-, Zertifikats-, Policy- und Teilnehmer-Governance eines produktiven Dataspaces.</td><td>edc_connector.py</td></tr>
+<tr><td><b>Datenschutz und Vertraulichkeit</b></td><td>OIDC-Claims, Rollen und getrennte Datenquellen sind technisch berücksichtigt.</td><td class="status gap">Nachweis fehlt</td><td>Kein erkennbares DPP-Datenschutzkonzept zu Datenminimierung, Zweckbindung, Aufbewahrung, Löschung, Betroffenenrechten und Trennung personenbezogener Daten.</td><td>auth.py; main.py</td></tr>
+<tr><td><b>Verfügbarkeit, Aktualität und Widerruf</b></td><td>Memory-/Disk-/GitHub-Caches, Status-Endpunkte und Repository-Versionen.</td><td class="status partial">Teilweise</td><td>Keine dokumentierten SLA, Wiederherstellungsziele, DPP-Widerrufs-/Ablaufzustände, Cache-Invalidierungsregeln für externe Resolver oder öffentliche Betriebsüberwachung.</td><td>main.py</td></tr>
+<tr><td><b>Batteriepass / produktspezifische Rechtsakte</b></td><td>Allgemeine Material-, Nachhaltigkeits- und CRMA-Daten sind anschlussfähig.</td><td class="status gap">Nicht nachgewiesen</td><td>Eigenes Batteriepass-Modell mit Batterie-ID, Produktionsdaten, Kapazität, State of Health, Carbon Footprint, Recycling und rollenbezogenem Zugriff fehlt beziehungsweise ist nicht belegt.</td><td>Produktmodell prüfen</td></tr>
+</tbody>
+</table>
+
+<div class="page-break"></div>
+<h2>Authentifizierung und Zugriffsschutz: Detailbewertung</h2>
+<p>Die Authentifizierungsarchitektur ist grundsätzlich passend für einen DPP-Dienst: OIDC/Keycloak, signierte JWTs, JWKS und Rollenprüfung sind implementiert. Für eine regulatorisch belastbare Umgebung muss jedoch der sichere Betriebsmodus technisch erzwungen werden, statt ihn nur über Umgebungsvariablen zu ermöglichen.</p>
+<div class="priority"><strong>Priorität 1:</strong> Produktionsstart abbrechen, wenn <code>AUTH_ENABLED</code> nicht aktiv ist oder Issuer, Audience und JWKS fehlen. Öffentliche Pfade auf Status- und notwendige Resolver-Funktionen begrenzen.</div>
+<div class="priority"><strong>Priorität 1:</strong> NX-Export auf HTTPS beziehungsweise mTLS umstellen und einen kurzlebigen Service-Token oder einen signierten Upload-Request verwenden. Idempotency-Key und Request-ID gegen Wiederholungsduplikate ergänzen.</div>
+<div class="priority"><strong>Priorität 1:</strong> EDC-Zertifikatsprüfung aktivieren und <code>verify=False</code> entfernen. CA-Bundle, Zertifikatsrotation und getrennte Development-/Production-Konfiguration einführen.</div>
+<div class="priority"><strong>Priorität 2:</strong> Autorisierung als Policy-Modell ausdrücken: Organisation, Rolle, Produkt, Submodell, Zweck, Datenklassifikation und Ablaufzeit.</div>
+<div class="priority"><strong>Priorität 2:</strong> Auditdaten serverseitig aus dem validierten Token erzeugen. Freigaben, Ablehnungen, Widerrufe, Exportversionen und Signaturstatus unveränderlich protokollieren.</div>
+
+<h2>Priorisierte Umsetzung</h2>
+<table>
+<thead><tr><th>Priorität</th><th>Maßnahme</th><th>Erwarteter Effekt</th></tr></thead>
+<tbody>
+<tr><td class="status gap">P1</td><td>Auth verpflichtend, HTTPS/mTLS, EDC-TLS-Prüfung, NX-Service-Authentifizierung</td><td>Schließt die unmittelbarsten Vertraulichkeits-, Identitäts- und Manipulationsrisiken.</td></tr>
+<tr><td class="status gap">P1</td><td>Produkt-, Hersteller-, Betreiber- und Facility-IDs sowie dauerhaften DPP-Resolver definieren</td><td>Stabile Identität und regulatorisch nachvollziehbare Auflösung.</td></tr>
+<tr><td class="status partial">P2</td><td>ABAC-/Policy-Modell für Rollen, Organisationen, Submodelle und Datenklassen</td><td>Kontrollierter Zugriff auf öffentliche und vertrauliche DPP-Daten.</td></tr>
+<tr><td class="status partial">P2</td><td>Signierte DPP-Versionen, Provenienz und unveränderliches Audit</td><td>Nachweis von Herkunft, Integrität, Freigabe und Änderungshistorie.</td></tr>
+<tr><td class="status partial">P2</td><td>Verbindliche Pflichtfeldsets je Produktgruppe und Veröffentlichungsgate</td><td>Verhindert unvollständige DPPs; ermöglicht delegierte Rechtsakte.</td></tr>
+<tr><td class="status partial">P3</td><td>Batteriepass sowie Reparatur-, Demontage-, Gefahrstoff- und Recyclingmodelle</td><td>Erweiterbarkeit für konkrete Produktgruppen und spätere Pflichten.</td></tr>
+</tbody>
+</table>
+
+<h2>Bewertungsgrundlage</h2>
+<p>Regulatorischer Rahmen: Verordnung (EU) 2024/1781 über die Schaffung eines Rahmens für die Festlegung von Ökodesign-Anforderungen für nachhaltige Produkte (ESPR), insbesondere DPP-Regelungen; Verordnung (EU) 2023/1542 über Batterien und Altbatterien, einschließlich Batteriepass. Die konkrete Pflichtdatenmenge und die betroffenen Produkte hängen vom jeweils geltenden delegierten Rechtsakt ab.</p>
+<p class="small">Technische Repository-Belege: <code>backend/auth.py</code>, <code>backend/main.py</code>, <code>backend/schema_validator.py</code>, <code>backend/edc_connector.py</code>, <code>backend/crma_checker.py</code> und <code>backend/scripts/export_nx_to_htx.py</code>. Diese Bewertung ist eine technische Gap-Analyse und keine Rechtsberatung oder formale Konformitätsbescheinigung.</p>
+<div class="footer">HealthTrack-X | DPP-Regulierungsbewertung | Erstellt aus dem Repository-Stand vom 17.09.2026</div>
+</body>
+</html>

@@ -1,0 +1,66 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+resources:
+  - ../../base
+
+# Dev: single replica, latest tags, relaxed limits
+patches:
+  - target:
+      kind: Deployment
+      name: htx-backend
+    patch: |
+      - op: replace
+        path: /spec/replicas
+        value: 1
+  - target:
+      kind: Deployment
+      name: htx-frontend
+    patch: |
+      - op: replace
+        path: /spec/replicas
+        value: 1
+  - target:
+      kind: Ingress
+      name: htx-frontend-ingress
+    patch: |
+      - op: replace
+        path: /spec/rules/0/host
+        value: htx-frontend.example.com
+  - target:
+      kind: Ingress
+      name: htx-keycloak-ingress
+    patch: |
+      - op: replace
+        path: /spec/rules/0/host
+        value: htx-keycloak.example.com
+  - target:
+      kind: ConfigMap
+      name: htx-config
+    patch: |
+      - op: replace
+        path: /data/CORS_ORIGINS
+        value: "https://htx-frontend.example.com"
+      - op: replace
+        path: /data/KEYCLOAK_ISSUER
+        value: "https://htx-keycloak.example.com/realms/healthtrack-x"
+      - op: replace
+        path: /data/KEYCLOAK_JWKS_URL
+        value: "http://htx-keycloak.healthtrack-x.svc.cluster.local:8080/realms/healthtrack-x/protocol/openid-connect/certs"
+      - op: replace
+        path: /data/KEYCLOAK_ADMIN_URL
+        value: "http://htx-keycloak.healthtrack-x.svc.cluster.local:8080"
+
+images:
+  - name: htx-backend
+    newName: registry.example.com/healthtrack-x/htx-backend
+    newTag: latest
+  - name: htx-frontend
+    newName: registry.example.com/healthtrack-x/htx-frontend
+    newTag: latest
+  - name: htx-keycloak
+    newName: registry.example.com/healthtrack-x/htx-keycloak
+    newTag: latest
+  - name: nats
+    newName: nats
+    newTag: latest

@@ -1,0 +1,12 @@
+{
+    "mcpServers": {
+        "healthtrack-x": {
+            "command": "python",
+            "args": ["server.py"],
+            "cwd": "mcp-server",
+            "env": {
+                "HTX_BACKEND_URL": "http://localhost:8000"
+            }
+        }
+    }
+}

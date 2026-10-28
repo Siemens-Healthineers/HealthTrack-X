@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Clear Pending Items</title>
+    <style>
+        body { font-family: Arial; padding: 20px; }
+        .box { border: 1px solid #ccc; padding: 15px; margin: 10px 0; }
+        button { padding: 10px 20px; margin: 5px; cursor: pointer; }
+        .success { color: green; }
+        .info { color: blue; }
+    </style>
+</head>
+<body>
+    <h1>HTX Demo App - Session Storage Manager</h1>
+    
+    <div class="box">
+        <h2>Current Pending Items:</h2>
+        <pre id="pendingItems">Loading...</pre>
+    </div>
+    
+    <div class="box">
+        <h2>Actions:</h2>
+        <button onclick="clearPending()">Clear Pending Items</button>
+        <button onclick="clearAll()">Clear All Session Data</button>
+        <button onclick="reload()">Refresh</button>
+        <p id="status"></p>
+    </div>
+    
+    <script>
+        function showPending() {
+            const pending = sessionStorage.getItem('optimisticProducts');
+            const elem = document.getElementById('pendingItems');
+            if (pending) {
+                const items = JSON.parse(pending);
+                elem.textContent = JSON.stringify(items, null, 2);
+            } else {
+                elem.textContent = 'No pending items';
+            }
+        }
+        
+        function clearPending() {
+            sessionStorage.removeItem('optimisticProducts');
+            sessionStorage.setItem('dataInvalidated', Date.now().toString());
+            document.getElementById('status').innerHTML = '<span class="success">✓ Pending items cleared!</span>';
+            showPending();
+        }
+        
+        function clearAll() {
+            sessionStorage.clear();
+            document.getElementById('status').innerHTML = '<span class="success">✓ All session data cleared!</span>';
+            showPending();
+        }
+        
+        function reload() {
+            showPending();
+            document.getElementById('status').innerHTML = '<span class="info">Refreshed</span>';
+        }
+        
+        // Show on load
+        showPending();
+    </script>
+</body>
+</html>

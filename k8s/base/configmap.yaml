@@ -1,0 +1,29 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: htx-config
+data:
+  # NATS
+  NATS_URL: "nats://htx-nats.healthtrack-x.svc.cluster.local:4222"
+
+  # CORS – adjust to your actual Ingress domain
+  CORS_ORIGINS: "https://htx.example.com"
+
+  # Authentication
+  AUTH_ENABLED: "true"
+
+  # Keycloak OIDC (backend token validation)
+  # KEYCLOAK_ISSUER must match the public URL the browser uses (iss claim)
+  KEYCLOAK_ISSUER: "https://auth.htx.example.com/realms/healthtrack-x"
+  # JWKS fetched cluster-internally for performance
+  KEYCLOAK_JWKS_URL: "http://htx-keycloak.healthtrack-x.svc.cluster.local:8080/realms/healthtrack-x/protocol/openid-connect/certs"
+  KEYCLOAK_CLIENT_ID: "healthtrackx-frontend"
+
+  # Keycloak Admin API (user management)
+  KEYCLOAK_ADMIN_URL: "http://htx-keycloak.healthtrack-x.svc.cluster.local:8080"
+  KEYCLOAK_ADMIN_CLIENT_ID: "healthtrackx-backend"
+  KEYCLOAK_ADMIN_REALM: "healthtrack-x"
+  KEYCLOAK_ADMIN_VIEWER_ROLE: "viewer"
+
+  # GitHub
+  GITHUB_BRANCH: "main"

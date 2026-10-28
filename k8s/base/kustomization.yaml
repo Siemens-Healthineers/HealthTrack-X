@@ -1,0 +1,29 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+namespace: healthtrack-x
+
+resources:
+  - namespace.yaml
+  - configmap.yaml
+  - secrets.yaml
+  - nats/statefulset.yaml
+  - nats/service.yaml
+  - nats/configmap.yaml
+  - backend/deployment.yaml
+  - backend/service.yaml
+  - backend/pvc.yaml
+  - frontend/deployment.yaml
+  - frontend/service.yaml
+  - frontend/configmap.yaml
+  - keycloak/statefulset.yaml
+  - keycloak/service.yaml
+  - keycloak/pvc.yaml
+  - ingress-frontend.yaml
+  - ingress-keycloak.yaml
+  - ingress-backend.yaml
+
+labels:
+  - pairs:
+      app.kubernetes.io/part-of: healthtrack-x
+    includeSelectors: false

@@ -1,0 +1,31 @@
+# Logs
+logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
+
+node_modules
+dist
+dist-ssr
+*.local
+
+# Generated Design Tokens - Auskommentiert um sie ins Repo aufzunehmen
+# Wichtig: Diese werden benötigt wenn das Projekt als ZIP verteilt wird
+# src/themes/**/generated/
+
+# Corporate Theme (nicht für Open Source)
+src/themes/corporate/
+
+# Editor directories and files
+.vscode/*
+!.vscode/extensions.json
+.idea
+.DS_Store
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?

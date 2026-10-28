@@ -1,0 +1,64 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: htx-backend
+  labels:
+    app.kubernetes.io/name: backend
+    app.kubernetes.io/component: api
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: backend
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: backend
+        app.kubernetes.io/component: api
+    spec:
+      containers:
+        - name: backend
+          # Registry-neutral name; overlays map this to a concrete registry/tag
+          # (local -> htx-backend:local; dev/prod -> <registry>/htx-backend:latest).
+          image: htx-backend:latest
+          # Local overlay patches this to Never and uses htx-backend:local.
+          # Re-test k8s/overlays/local after changing image names or pull policy.
+          imagePullPolicy: Always
+          ports:
+            - name: http
+              containerPort: 8000
+          envFrom:
+            - configMapRef:
+                name: htx-config
+            - secretRef:
+                name: htx-secrets
+          volumeMounts:
+            - name: backend-data
+              mountPath: /app/config
+              subPath: config
+            - name: backend-data
+              mountPath: /app/cache
+              subPath: cache
+          livenessProbe:
+            httpGet:
+              path: /
+              port: http
+            initialDelaySeconds: 15
+            periodSeconds: 10
+          readinessProbe:
+            httpGet:
+              path: /
+              port: http
+            initialDelaySeconds: 10
+            periodSeconds: 5
+          resources:
+            requests:
+              cpu: 100m
+              memory: 256Mi
+            limits:
+              cpu: 500m
+              memory: 512Mi
+      volumes:
+        - name: backend-data
+          persistentVolumeClaim:
+            claimName: htx-backend-data

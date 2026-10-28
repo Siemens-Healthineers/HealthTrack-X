@@ -1,0 +1,121 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+resources:
+  - ../../base
+
+# Prod: higher replicas, resource limits, TLS enabled
+patches:
+  - target:
+      kind: Deployment
+      name: htx-backend
+    patch: |
+      - op: replace
+        path: /spec/replicas
+        value: 2
+      - op: replace
+        path: /spec/template/spec/containers/0/resources/requests/cpu
+        value: 200m
+      - op: replace
+        path: /spec/template/spec/containers/0/resources/requests/memory
+        value: 512Mi
+      - op: replace
+        path: /spec/template/spec/containers/0/resources/limits/cpu
+        value: "1"
+      - op: replace
+        path: /spec/template/spec/containers/0/resources/limits/memory
+        value: 1Gi
+  - target:
+      kind: Deployment
+      name: htx-frontend
+    patch: |
+      - op: replace
+        path: /spec/replicas
+        value: 2
+  - target:
+      kind: Ingress
+      name: htx-frontend-ingress
+    patch: |
+      - op: replace
+        path: /spec/rules/0/host
+        value: htx-frontend.example.com
+      - op: add
+        path: /metadata/annotations/cert-manager.io~1cluster-issuer
+        value: letsencrypt-prod
+      - op: add
+        path: /spec/tls
+        value:
+          - hosts:
+              - htx-frontend.example.com
+            secretName: htx-frontend-tls
+  - target:
+      kind: Ingress
+      name: htx-keycloak-ingress
+    patch: |
+      - op: replace
+        path: /spec/rules/0/host
+        value: htx-keycloak.example.com
+      - op: replace
+        path: /spec/rules/0/http/paths/0/backend/service/name
+        value: htx-keycloak
+      - op: replace
+        path: /spec/rules/0/http/paths/0/backend/service/port/number
+        value: 8080
+      - op: add
+        path: /metadata/annotations/cert-manager.io~1cluster-issuer
+        value: letsencrypt-prod
+      - op: add
+        path: /spec/tls
+        value:
+          - hosts:
+              - htx-keycloak.example.com
+            secretName: htx-keycloak-tls
+  - target:
+      kind: Ingress
+      name: htx-backend-ingress
+    patch: |
+      - op: replace
+        path: /spec/rules/0/host
+        value: htx-backend.example.com
+      - op: add
+        path: /metadata/annotations/cert-manager.io~1cluster-issuer
+        value: letsencrypt-prod
+      - op: add
+        path: /spec/tls
+        value:
+          - hosts:
+              - htx-backend.example.com
+            secretName: htx-backend-tls
+  - target:
+      kind: ConfigMap
+      name: htx-config
+    patch: |
+      - op: replace
+        path: /data/CORS_ORIGINS
+        value: "https://htx-frontend.example.com"
+      - op: replace
+        path: /data/KEYCLOAK_ISSUER
+        value: "https://htx-keycloak.example.com/realms/healthtrack-x"
+      - op: replace
+        path: /data/KEYCLOAK_JWKS_URL
+        value: "http://htx-keycloak.healthtrack-x.svc.cluster.local:8080/realms/healthtrack-x/protocol/openid-connect/certs"
+      - op: replace
+        path: /data/KEYCLOAK_ADMIN_URL
+        value: "http://htx-keycloak.healthtrack-x.svc.cluster.local:8080"
+      - op: replace
+        path: /data/NATS_URL
+        value: "nats://htx-nats:4222"
+
+images:
+  - name: htx-backend
+    newName: registry.example.com/healthtrack-x/htx-backend
+    newTag: latest
+  - name: htx-frontend
+    newName: registry.example.com/healthtrack-x/htx-frontend
+    newTag: latest
+  - name: htx-keycloak
+    newName: registry.example.com/healthtrack-x/htx-keycloak
+    newTag: latest
+  - name: nats
+    newName: nats
+    newTag: latest

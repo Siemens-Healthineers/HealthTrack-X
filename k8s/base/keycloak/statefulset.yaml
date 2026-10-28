@@ -1,0 +1,98 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: htx-keycloak
+  labels:
+    app.kubernetes.io/name: keycloak
+    app.kubernetes.io/component: auth
+spec:
+  serviceName: htx-keycloak
+  replicas: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: keycloak
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: keycloak
+        app.kubernetes.io/component: auth
+    spec:
+      initContainers:
+        # Copy realm import files from the image into the PVC.
+        # The PVC mount on /opt/keycloak/data would otherwise hide realm import
+        # files baked into that path, so the image stages them in bootstrap.
+        - name: copy-realm-import
+          # Registry-neutral name; overlays map this to a concrete registry/tag.
+          image: htx-keycloak:latest
+          imagePullPolicy: Always
+          command: ["sh", "-c", "cp -rn /opt/keycloak-bootstrap/* /realm-import/"]
+          volumeMounts:
+            - name: realm-import
+              mountPath: /realm-import
+      containers:
+        - name: keycloak
+          # Registry-neutral name; overlays map this to a concrete registry/tag.
+          image: htx-keycloak:latest
+          imagePullPolicy: Always
+          args: ["start-dev", "--import-realm", "--health-enabled=true"]
+          ports:
+            - name: http
+              containerPort: 8080
+          env:
+            - name: KC_HTTP_ENABLED
+              value: "true"
+            - name: KC_HOSTNAME_STRICT
+              value: "false"
+            - name: KC_PROXY_HEADERS
+              value: "xforwarded"
+            - name: KC_BOOTSTRAP_ADMIN_USERNAME
+              valueFrom:
+                secretKeyRef:
+                  name: htx-secrets
+                  key: KC_ADMIN_USER
+            - name: KC_BOOTSTRAP_ADMIN_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: htx-secrets
+                  key: KC_ADMIN_PASSWORD
+            - name: KEYCLOAK_ADMIN_CLIENT_SECRET
+              valueFrom:
+                secretKeyRef:
+                  name: htx-secrets
+                  key: KEYCLOAK_ADMIN_CLIENT_SECRET
+          volumeMounts:
+            - name: data
+              mountPath: /opt/keycloak/data
+            - name: realm-import
+              mountPath: /opt/keycloak/data/import
+          startupProbe:
+            tcpSocket:
+              port: http
+            initialDelaySeconds: 30
+            periodSeconds: 10
+            failureThreshold: 30
+          livenessProbe:
+            tcpSocket:
+              port: http
+            periodSeconds: 15
+            failureThreshold: 3
+          readinessProbe:
+            httpGet:
+              path: /realms/healthtrack-x
+              port: http
+            initialDelaySeconds: 10
+            periodSeconds: 10
+            failureThreshold: 6
+          resources:
+            requests:
+              cpu: 200m
+              memory: 512Mi
+            limits:
+              cpu: "1"
+              memory: 1Gi
+      volumes:
+        - name: data
+          persistentVolumeClaim:
+            claimName: keycloak-data
+        - name: realm-import
+          emptyDir: {}

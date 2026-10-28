@@ -1,0 +1,23 @@
+# ── Traefik Static Configuration ─────────────────────────────
+# Production reverse proxy for HealthTrack-X
+# ─────────────────────────────────────────────────────────────
+
+api:
+  dashboard: true
+  insecure: true  # Dashboard on :8080 (disable in production)
+
+entryPoints:
+  web:
+    address: ":80"
+  websecure:
+    address: ":443"
+
+providers:
+  file:
+    filename: /etc/traefik/dynamic.yml
+    watch: true
+  docker:
+    exposedByDefault: false
+
+log:
+  level: INFO

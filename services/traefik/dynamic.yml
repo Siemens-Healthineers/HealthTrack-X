@@ -1,0 +1,29 @@
+# ── Traefik Dynamic Configuration ────────────────────────────
+# Route definitions for HealthTrack-X services
+# ─────────────────────────────────────────────────────────────
+
+http:
+  routers:
+    frontend:
+      rule: "PathPrefix(`/`)"
+      service: frontend
+      entryPoints:
+        - web
+
+    backend-api:
+      rule: "PathPrefix(`/api`)"
+      service: backend
+      entryPoints:
+        - web
+      priority: 100
+
+  services:
+    frontend:
+      loadBalancer:
+        servers:
+          - url: "http://htx-frontend:80"
+
+    backend:
+      loadBalancer:
+        servers:
+          - url: "http://htx-backend:8000"

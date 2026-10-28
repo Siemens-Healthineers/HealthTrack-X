@@ -1,0 +1,40 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: htx-ingress
+  annotations:
+    # AKS App Routing add-on (managed nginx)
+    kubernetes.io/ingress.class: webapprouting.kubernetes.azure.com
+    # Auto-TLS with Let's Encrypt (requires cert-manager + ClusterIssuer)
+    # cert-manager.io/cluster-issuer: letsencrypt-prod
+spec:
+  # TLS configuration – uncomment when domain + cert-manager are ready
+  # tls:
+  #   - hosts:
+  #       - htx.example.com
+  #       - auth.htx.example.com
+  #     secretName: htx-tls
+  rules:
+    # ── Main application ──────────────────────────────────────
+    - host: htx.example.com
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: htx-frontend
+                port:
+                  number: 80
+
+    # ── Keycloak (separate subdomain) ─────────────────────────
+    - host: auth.htx.example.com
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: htx-keycloak
+                port:
+                  number: 8080

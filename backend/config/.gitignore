@@ -1,0 +1,13 @@
+# Ignore sensitive configuration files
+*.env
+!.env.example
+github_config.json
+github_config.yaml
+.github_config.key
+
+# Keep directory structure and templates
+!.gitignore
+!README.md
+!env/
+!yaml/
+!yaml/github_config.yaml.template

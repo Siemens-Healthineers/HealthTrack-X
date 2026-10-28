@@ -1,0 +1,44 @@
+# ── Node / Python environments ───────────────────────────────
+**/node_modules
+**/.venv
+**/__pycache__
+**/*.pyc
+
+# ── Build outputs ────────────────────────────────────────────
+frontend/dist
+backend/cache
+backend/logs
+
+# ── Git / IDE ────────────────────────────────────────────────
+.git
+.github
+.vscode
+**/.DS_Store
+
+# ── Data & docs (not needed in containers) ───────────────────
+docs/licenses-*.json
+compliance
+data
+*.md
+!docs/*.md
+!frontend/README.md
+!backend/config/README.md
+
+# ── Misc ─────────────────────────────────────────────────────
+.env
+**/.env
+**/.env.*
+**/*.env
+**/*.pem
+**/*.key
+backend/config/*
+!backend/config/README.md
+!backend/config/yaml
+backend/config/yaml/*
+!backend/config/yaml/github_config.yaml.template
+backend/github_config.json
+backend/github_config.yaml
+backend/.github_config.key
+frontend/src/themes/corporate
+*.bat
+scripts

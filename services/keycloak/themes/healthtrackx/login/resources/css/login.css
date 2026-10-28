@@ -1,0 +1,477 @@
+/* ── HealthTrack-X Keycloak Login Theme ─────────────────────── */
+/* Microsoft Auth inspired – Dark mode, PatternFly v5 (KC 26)    */
+/* ──────────────────────────────────────────────────────────── */
+
+:root {
+  --htx-bg: #0f1923;
+  --htx-card: #1A2332;
+  --htx-input-bg: #0f1923;
+  --htx-border: #2E3C4F;
+  --htx-border-focus: #4A6FA5;
+  --htx-text: #FAFAFA;
+  --htx-muted: #94a3b8;
+  --htx-primary: #4A6FA5;
+  --htx-primary-hover: #5a82ba;
+  --htx-danger: #F87171;
+  --htx-success: #4ade80;
+  --htx-radius: 8px;
+  --htx-font: "Segoe UI", -apple-system, BlinkMacSystemFont, Roboto, sans-serif;
+}
+
+/* ── Force dark mode always (override PF5 light default) ──── */
+html {
+  color-scheme: dark !important;
+}
+
+html, body {
+  background: var(--htx-bg) !important;
+  color: var(--htx-text) !important;
+  font-family: var(--htx-font) !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  min-height: 100vh !important;
+  -webkit-font-smoothing: antialiased !important;
+}
+
+/* ── Full page centering ─────────────────────────────────── */
+.pf-v5-c-login {
+  background: var(--htx-bg) !important;
+  min-height: 100vh !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+}
+
+.pf-v5-c-login__container {
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: center !important;
+  width: 100% !important;
+  max-width: 440px !important;
+  padding: 0 16px !important;
+}
+
+/* ── Header / Logo area ──────────────────────────────────── */
+.pf-v5-c-login__header,
+#kc-header {
+  width: 100% !important;
+  text-align: center !important;
+  padding: 0 0 24px 0 !important;
+  background: transparent !important;
+}
+
+#kc-header-wrapper {
+  display: block !important;
+  text-align: center !important;
+  font-size: 1.375rem !important;
+  font-weight: 400 !important;
+  color: var(--htx-text) !important;
+  line-height: 1.4 !important;
+}
+
+#kc-header-wrapper strong {
+  display: block !important;
+  font-weight: 700 !important;
+  font-size: 1.5rem !important;
+  margin-top: 4px !important;
+}
+
+/* Logo above the header text */
+#kc-header-wrapper::before {
+  content: '' !important;
+  display: block !important;
+  width: 48px !important;
+  height: 48px !important;
+  background: url('../img/logo.png') center/contain no-repeat !important;
+  margin: 0 auto 16px auto !important;
+}
+
+#kc-header-wrapper img {
+  height: 36px !important;
+  width: auto !important;
+}
+
+/* ── Login card (Microsoft style) ────────────────────────── */
+.pf-v5-c-login__main {
+  background: var(--htx-card) !important;
+  border: 1px solid var(--htx-border) !important;
+  border-radius: 6px !important;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.4), 0 14px 34px rgba(0, 0, 0, 0.25) !important;
+  width: 100% !important;
+  max-width: 440px !important;
+  padding: 0 !important;
+  overflow: hidden !important;
+}
+
+/* ── Card header (title area) ─────────────────────────────── */
+.pf-v5-c-login__main-header {
+  padding: 32px 44px 0 44px !important;
+  background: transparent !important;
+  text-align: center !important;
+}
+
+#kc-page-title,
+.pf-v5-c-login__main-header .pf-v5-c-title {
+  color: var(--htx-text) !important;
+  font-size: 1.375rem !important;
+  font-weight: 400 !important;
+  font-family: var(--htx-font) !important;
+  line-height: 1.4 !important;
+}
+
+#kc-page-title strong,
+.pf-v5-c-login__main-header .pf-v5-c-title strong {
+  font-weight: 700 !important;
+  display: block !important;
+  font-size: 1.5rem !important;
+}
+
+/* ── Card body (form area) ───────────────────────────────── */
+.pf-v5-c-login__main-body {
+  padding: 24px 44px 36px 44px !important;
+  background: transparent !important;
+}
+
+/* ── Form groups ─────────────────────────────────────────── */
+.pf-v5-c-form__group {
+  margin-bottom: 20px !important;
+}
+
+/* ── Labels ──────────────────────────────────────────────── */
+.pf-v5-c-form__label,
+.pf-v5-c-form__label-text {
+  color: var(--htx-muted) !important;
+  font-size: 0.8125rem !important;
+  font-weight: 400 !important;
+  font-family: var(--htx-font) !important;
+}
+
+/* ── Input fields (rounded, bordered) ────────────────────── */
+span.pf-v5-c-form-control,
+.pf-v5-c-form-control,
+.pf-v5-c-login span.pf-v5-c-form-control,
+.pf-v5-c-login .pf-v5-c-form-control {
+  background: var(--htx-input-bg) !important;
+  border: 1px solid var(--htx-border) !important;
+  border-radius: 8px !important;
+  color: var(--htx-text) !important;
+  font-size: 0.9375rem !important;
+  font-family: var(--htx-font) !important;
+  padding: 0 !important;
+  outline: none !important;
+  box-shadow: none !important;
+  transition: border-color 0.15s ease !important;
+  display: flex !important;
+  align-items: center !important;
+  --pf-v5-c-form-control--BorderRadius: 8px !important;
+  --pf-v5-c-form-control--after--BorderBottomColor: transparent !important;
+  --pf-v5-c-form-control--before--BorderTopColor: var(--htx-border) !important;
+  --pf-v5-c-form-control--before--BorderRightColor: var(--htx-border) !important;
+  --pf-v5-c-form-control--before--BorderBottomColor: var(--htx-border) !important;
+  --pf-v5-c-form-control--before--BorderLeftColor: var(--htx-border) !important;
+}
+
+/* Remove PF5 ::before and ::after pseudo-borders */
+span.pf-v5-c-form-control::before,
+span.pf-v5-c-form-control::after,
+.pf-v5-c-form-control::before,
+.pf-v5-c-form-control::after {
+  border: none !important;
+  border-radius: 8px !important;
+}
+
+.pf-v5-c-form-control input,
+.pf-v5-c-form-control input[type="text"],
+.pf-v5-c-form-control input[type="password"],
+.pf-v5-c-form-control input[type="email"] {
+  background: transparent !important;
+  border: none !important;
+  border-radius: 8px !important;
+  color: var(--htx-text) !important;
+  font-size: 0.9375rem !important;
+  font-family: var(--htx-font) !important;
+  padding: 10px 14px !important;
+  outline: none !important;
+  box-shadow: none !important;
+  width: 100% !important;
+}
+
+span.pf-v5-c-form-control:focus-within,
+.pf-v5-c-form-control:focus-within {
+  border-color: var(--htx-border-focus) !important;
+  box-shadow: 0 0 0 2px rgba(74, 111, 165, 0.2) !important;
+  outline: none !important;
+  --pf-v5-c-form-control--after--BorderBottomColor: transparent !important;
+}
+
+input::placeholder {
+  color: var(--htx-muted) !important;
+  opacity: 0.6 !important;
+}
+
+/* ── Input group (password field + toggle) ───────────────── */
+.pf-v5-c-input-group {
+  background: var(--htx-input-bg) !important;
+  display: flex !important;
+  border: 1px solid var(--htx-border) !important;
+  border-radius: 8px !important;
+  overflow: hidden !important;
+  --pf-v5-c-input-group--child--BorderRadius: 0 !important;
+}
+
+.pf-v5-c-input-group::before,
+.pf-v5-c-input-group::after {
+  display: none !important;
+}
+
+.pf-v5-c-input-group:focus-within {
+  border-color: var(--htx-border-focus) !important;
+  box-shadow: 0 0 0 2px rgba(74, 111, 165, 0.2) !important;
+}
+
+.pf-v5-c-input-group__item {
+  background: transparent !important;
+  border: none !important;
+  --pf-v5-c-input-group__item--child--BorderRadius: 0 !important;
+}
+
+/* Remove ALL borders from form-control inside input-group */
+.pf-v5-c-input-group .pf-v5-c-form-control,
+.pf-v5-c-input-group span.pf-v5-c-form-control {
+  border: none !important;
+  border-radius: 0 !important;
+  box-shadow: none !important;
+  background: transparent !important;
+}
+
+.pf-v5-c-input-group .pf-v5-c-form-control::before,
+.pf-v5-c-input-group .pf-v5-c-form-control::after,
+.pf-v5-c-input-group .pf-v5-c-input-group__item::before,
+.pf-v5-c-input-group .pf-v5-c-input-group__item::after {
+  display: none !important;
+}
+
+/* Password toggle button */
+.pf-v5-c-button.pf-m-control {
+  background: transparent !important;
+  border: none !important;
+  border-left: 1px solid var(--htx-border) !important;
+  border-radius: 0 !important;
+  color: var(--htx-muted) !important;
+  padding: 10px 12px !important;
+  box-shadow: none !important;
+  outline: none !important;
+}
+
+.pf-v5-c-button.pf-m-control::before,
+.pf-v5-c-button.pf-m-control::after {
+  display: none !important;
+}
+
+/* Input next to toggle */
+.pf-v5-c-input-group .pf-v5-c-input-group__item.pf-m-fill .pf-v5-c-form-control,
+.pf-v5-c-input-group .pf-v5-c-input-group__item.pf-m-fill input {
+  border-radius: 0 !important;
+  border: none !important;
+}
+
+.pf-v5-c-button.pf-m-control:hover {
+  color: var(--htx-text) !important;
+}
+
+/* ── Primary button (Sign In) – light style like app ────── */
+.pf-v5-c-button.pf-m-primary,
+#kc-login {
+  background: #FAFAFA !important;
+  color: #1A2332 !important;
+  border: none !important;
+  border-radius: 8px !important;
+  padding: 10px 20px !important;
+  font-weight: 600 !important;
+  font-size: 0.875rem !important;
+  font-family: var(--htx-font) !important;
+  cursor: pointer !important;
+  width: 100% !important;
+  min-height: 36px !important;
+  letter-spacing: 0.01em !important;
+  transition: background-color 0.15s ease !important;
+  margin-top: 8px !important;
+}
+
+.pf-v5-c-button.pf-m-primary:hover,
+#kc-login:hover {
+  background: #E5E5E5 !important;
+}
+
+.pf-v5-c-button.pf-m-primary:active,
+#kc-login:active {
+  background: #D4D4D4 !important;
+}
+
+/* ── Remember me / Forgot password row ───────────────────── */
+.pf-v5-c-form__helper-text {
+  margin-top: 8px !important;
+}
+
+.pf-v5-c-helper-text__item-text,
+.pf-v5-c-helper-text__item-text a {
+  color: var(--htx-muted) !important;
+  font-size: 0.8125rem !important;
+}
+
+.pf-v5-c-helper-text__item-text a:hover {
+  color: var(--htx-primary) !important;
+  text-decoration: underline !important;
+}
+
+/* Checkbox */
+.pf-v5-c-check__label {
+  color: var(--htx-muted) !important;
+  font-size: 0.8125rem !important;
+}
+
+.pf-v5-c-check__input {
+  accent-color: var(--htx-primary) !important;
+}
+
+/* ── Links ───────────────────────────────────────────────── */
+a, a:visited {
+  color: var(--htx-primary) !important;
+  text-decoration: none !important;
+}
+
+a:hover {
+  color: var(--htx-primary-hover) !important;
+  text-decoration: underline !important;
+}
+
+/* ── Footer area ─────────────────────────────────────────── */
+.pf-v5-c-login__main-footer {
+  padding: 0 44px 32px 44px !important;
+  background: transparent !important;
+}
+
+/* ── Alerts (error/success) ──────────────────────────────── */
+.pf-v5-c-alert {
+  background: rgba(248, 113, 113, 0.06) !important;
+  border: none !important;
+  border-left: 3px solid var(--htx-danger) !important;
+  border-radius: 0 !important;
+  padding: 12px 16px !important;
+  margin-bottom: 16px !important;
+}
+
+.pf-v5-c-alert__title {
+  color: var(--htx-danger) !important;
+  font-size: 0.8125rem !important;
+  font-weight: 600 !important;
+}
+
+.pf-v5-c-alert__description {
+  color: var(--htx-muted) !important;
+  font-size: 0.8125rem !important;
+}
+
+.pf-v5-c-alert.pf-m-success {
+  border-left-color: var(--htx-success) !important;
+  background: rgba(74, 222, 128, 0.06) !important;
+}
+
+/* ── OTP / 2FA page styles ───────────────────────────────── */
+.pf-v5-c-form__group ol,
+ol#kc-totp-settings {
+  color: var(--htx-muted) !important;
+  font-size: 0.875rem !important;
+  line-height: 1.8 !important;
+  padding-left: 20px !important;
+  list-style: none !important;
+  padding-left: 0 !important;
+}
+
+ol#kc-totp-settings li {
+  margin-bottom: 12px !important;
+}
+
+/* Hide device name / label field in OTP setup */
+#kc-totp-settings + .pf-v5-c-form__group:has(input[name="userLabel"]),
+label[for="userLabel"],
+input[name="userLabel"],
+.pf-v5-c-form__group:has([id="userLabel"]) {
+  display: none !important;
+}
+
+/* QR Code box – keep white for scannability */
+#kc-totp-secret-qr-code,
+.kc-qrcode,
+ol img {
+  background: #ffffff !important;
+  padding: 16px !important;
+  border-radius: 6px !important;
+  display: inline-block !important;
+  margin: 12px 0 !important;
+}
+
+/* OTP secret key display */
+#kc-totp-secret-key,
+.kc-totp-secret-key {
+  background: var(--htx-input-bg) !important;
+  border: 1px solid var(--htx-border) !important;
+  border-radius: var(--htx-radius) !important;
+  padding: 8px 12px !important;
+  color: var(--htx-text) !important;
+  font-family: "Cascadia Code", "Fira Code", monospace !important;
+  font-size: 0.875rem !important;
+  letter-spacing: 0.05em !important;
+}
+
+/* ── Select dropdowns (OTP type) ─────────────────────────── */
+select,
+.pf-v5-c-form-control select {
+  background: var(--htx-input-bg) !important;
+  border: 1px solid var(--htx-border) !important;
+  border-radius: var(--htx-radius) !important;
+  color: var(--htx-text) !important;
+  padding: 8px 12px !important;
+  font-family: var(--htx-font) !important;
+}
+
+/* ── Page title overrides ────────────────────────────────── */
+h1, h2, h3, h4, .pf-v5-c-title {
+  color: var(--htx-text) !important;
+  font-family: var(--htx-font) !important;
+}
+
+/* ── Utility overrides for PF5 ───────────────────────────── */
+[class*="pf-v5-u-"] {
+  font-family: var(--htx-font) !important;
+}
+
+/* ── Hide KC footer branding ─────────────────────────────── */
+.pf-v5-c-login__footer {
+  display: none !important;
+}
+
+/* ── Responsive ──────────────────────────────────────────── */
+@media (max-width: 480px) {
+  .pf-v5-c-login__container {
+    padding: 0 8px !important;
+  }
+
+  .pf-v5-c-login__main {
+    border-radius: 0 !important;
+    border-left: none !important;
+    border-right: none !important;
+  }
+
+  .pf-v5-c-login__main-header {
+    padding: 32px 24px 0 24px !important;
+  }
+
+  .pf-v5-c-login__main-body {
+    padding: 20px 24px 28px 24px !important;
+  }
+
+  .pf-v5-c-login__main-footer {
+    padding: 0 24px 24px 24px !important;
+  }
+}

@@ -1,0 +1,166 @@
+# ── HealthTrack-X – Docker Compose (All Services) ────────────
+# Supplementary local stack only. The canonical demo path is Rancher Desktop
+# with `kubectl apply -k k8s/overlays/local` and `http://htx.local`.
+#
+# Quick start (core stack):
+#   docker compose up --build
+#
+# With authentication:
+#   docker compose --profile auth up --build
+#
+# With MCP server (AI tooling):
+#   docker compose --profile tools up --build
+#
+# Production (Traefik reverse proxy):
+#   docker compose --profile prod up --build
+#
+# All services:
+#   docker compose --profile auth --profile tools --profile prod up --build
+#
+# Access:
+#   Frontend:  http://localhost:3000
+#   Backend:   http://localhost:8000
+#   NATS Mon:  http://localhost:8222
+#   Keycloak:  http://localhost:8080  (profile: auth)
+#   Traefik:   http://localhost:8080  (profile: prod)
+#   MCP:       http://localhost:8001  (profile: tools)
+# ──────────────────────────────────────────────────────────────
+
+services:
+  # ── NATS JetStream (message broker) ────────────────────────
+  nats:
+    image: nats:alpine
+    container_name: htx-nats
+    ports:
+      - "4222:4222"
+      - "8222:8222"
+    volumes:
+      - nats-data:/data
+      - ./services/nats/nats-server.conf:/etc/nats/nats-server.conf:ro
+    command: ["-c", "/etc/nats/nats-server.conf"]
+    healthcheck:
+      test: ["CMD", "wget", "--spider", "-q", "http://127.0.0.1:8222/healthz"]
+      interval: 5s
+      timeout: 3s
+      retries: 5
+    restart: unless-stopped
+
+  # ── Backend (FastAPI + integrated worker) ──────────────────
+  backend:
+    build:
+      context: .
+      dockerfile: backend/Dockerfile
+    container_name: htx-backend
+    ports:
+      - "8000:8000"
+    environment:
+      - NATS_URL=nats://htx-nats:4222
+      - CORS_ORIGINS=http://localhost:3000,http://localhost:5173,http://localhost:5174,http://127.0.0.1:3000,http://127.0.0.1:5173,http://127.0.0.1:5174
+      - AUTH_ENABLED=${AUTH_ENABLED:-false}
+      - KEYCLOAK_ISSUER=${KEYCLOAK_ISSUER:-http://localhost:8080/realms/healthtrack-x}
+      - KEYCLOAK_JWKS_URL=${KEYCLOAK_JWKS_URL:-}
+      - KEYCLOAK_CLIENT_ID=${KEYCLOAK_CLIENT_ID:-healthtrackx-frontend}
+      - KEYCLOAK_ADMIN_URL=${KEYCLOAK_ADMIN_URL:-http://htx-keycloak:8080}
+      - KEYCLOAK_ADMIN_CLIENT_SECRET=${KEYCLOAK_ADMIN_CLIENT_SECRET:-}
+    env_file:
+      - path: ./backend/config/env/.env
+        required: false
+    volumes:
+      - ./backend/config:/app/config
+    depends_on:
+      nats:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://localhost:8000/')"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 15s
+    restart: unless-stopped
+
+  # ── Frontend (nginx + Vite SPA) ────────────────────────────
+  frontend:
+    build:
+      context: .
+      dockerfile: frontend/Dockerfile
+      args:
+        VITE_OIDC_AUTHORITY: ${VITE_OIDC_AUTHORITY:-}
+        VITE_OIDC_CLIENT_ID: ${VITE_OIDC_CLIENT_ID:-}
+    container_name: htx-frontend
+    ports:
+      - "3000:80"
+    depends_on:
+      backend:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "wget", "--spider", "-q", "http://localhost:80"]
+      interval: 10s
+      timeout: 3s
+      retries: 3
+    restart: unless-stopped
+
+  # ── Keycloak (OIDC authentication) ────────────────────────
+  keycloak:
+    build:
+      context: .
+      dockerfile: services/keycloak/Dockerfile
+    container_name: htx-keycloak
+    ports:
+      - "8080:8080"
+    volumes:
+      - keycloak-data:/opt/keycloak/data
+    environment:
+      - KC_BOOTSTRAP_ADMIN_USERNAME=${KC_ADMIN_USER:-admin}
+      - KC_BOOTSTRAP_ADMIN_PASSWORD=${KC_ADMIN_PASSWORD:-}
+      - KEYCLOAK_ADMIN_CLIENT_SECRET=${KEYCLOAK_ADMIN_CLIENT_SECRET:-}
+    healthcheck:
+      test: ["CMD-SHELL", "exec 3<>/dev/tcp/localhost/8080 && echo -e 'GET /health/ready HTTP/1.1\\r\\nHost: localhost\\r\\nConnection: close\\r\\n\\r\\n' >&3 && cat <&3 | grep -q '200'"]
+      interval: 15s
+      timeout: 5s
+      retries: 10
+      start_period: 30s
+    restart: unless-stopped
+    profiles:
+      - auth
+
+  # ── Traefik (reverse proxy – production) ───────────────────
+  traefik:
+    build:
+      context: .
+      dockerfile: services/traefik/Dockerfile
+    container_name: htx-traefik
+    ports:
+      - "80:80"
+      - "443:443"
+      - "8081:8080"    # Dashboard (shifted to avoid keycloak conflict)
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+    depends_on:
+      frontend:
+        condition: service_healthy
+      backend:
+        condition: service_healthy
+    restart: unless-stopped
+    profiles:
+      - prod
+
+  # ── MCP Server (AI assistant tooling) ─────────────────────
+  mcp-server:
+    build:
+      context: .
+      dockerfile: services/mcp-server/Dockerfile
+    container_name: htx-mcp
+    ports:
+      - "8001:8001"
+    environment:
+      - HTX_BACKEND_URL=http://htx-backend:8000
+    depends_on:
+      backend:
+        condition: service_healthy
+    restart: unless-stopped
+    profiles:
+      - tools
+
+volumes:
+  nats-data:
+  keycloak-data:

@@ -1,0 +1,60 @@
+{
+  "product_passport": {
+    "version": "1.0",
+    "schema": "EU-ESPR-DPP-Core-Model",
+    "product_identification": {
+      "product_id": "string",
+      "product_name": "string",
+      "product_category": "string",
+      "data_carrier": {
+        "type": "qr_code|datamatrix|nfc|url",
+        "url": "https://example.com/dpp/<product_id>"
+      }
+    },
+    "manufacturer": {
+      "name": "string",
+      "address": "string",
+      "contact": "string"
+    },
+    "material_composition": {
+      "total_mass_kg": 0.0,
+      "materials": [
+        {
+          "name": "string",
+          "mass_fraction_percent": 0.0,
+          "is_critical_raw_material": "true|false"
+        }
+      ]
+    },
+    "raw_material_origin": {
+      "_comment": "mandatory if is_critical_raw_material=true for any material",
+      "traceability_required": true,
+      "supply_chain_steps": [
+        {
+          "step": "Mining|Refining|Smelting|Recycling",
+          "material": "string",
+          "country_of_origin": "string"
+        }
+      ]
+    },
+    "recycling_information": {
+      "recyclable_percent": 0.0
+    },
+    "end_of_life": {
+      "disassembly_instructions": "string",
+      "recycling_guidelines": "string"
+    },
+    "compliance": {
+      "applicable_regulations": [
+        "ESPR (EU 2024/1781)",
+        "CRMA (EU 2024/1252)"
+      ],
+      "_comment": "include CRMA when critical raw materials are present"
+    },
+    "audit_log": {
+      "created_at": "YYYY-MM-DD",
+      "updated_at": "YYYY-MM-DD",
+      "data_provider": "string"
+    }
+  }
+}

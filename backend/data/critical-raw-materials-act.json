@@ -1,0 +1,382 @@
+{
+  "2023": [
+    {
+      "material": "Aluminium",
+      "CAS": "7429-90-5",
+      "EC": "231-072-3",
+      "critical-raw-material": "yes",
+      "strategic-raw-material": "no"
+    },
+    {
+      "material": "Bauxite",
+      "CAS": "1318-16-7",
+      "EC": "603-521-7",
+      "critical-raw-material": "yes",
+      "strategic-raw-material": "no"
+    },
+    {
+      "material": "Antimony",
+      "CAS": "7440-36-0",
+      "EC": "231-146-5",
+      "critical-raw-material": "yes",
+      "strategic-raw-material": "no"
+    },
+    {
+      "material": "Arsenic",
+      "CAS": "7440-38-2",
+      "EC": "231-148-6",
+      "critical-raw-material": "yes",
+      "strategic-raw-material": "no"
+    },
+    {
+      "material": "Barite",
+      "CAS": "13462-86-7",
+      "EC": "236-664-5",
+      "critical-raw-material": "yes",
+      "strategic-raw-material": "no"
+    },
+    {
+      "material": "Beryllium",
+      "CAS": "7440-41-7",
+      "EC": "231-150-7",
+      "critical-raw-material": "yes",
+      "strategic-raw-material": "no"
+    },
+    {
+      "material": "Bismuth",
+      "CAS": "7440-69-9",
+      "EC": "231-177-4",
+      "critical-raw-material": "yes",
+      "strategic-raw-material": "yes"
+    },
+    {
+      "material": "Boron",
+      "CAS": "7440-42-8",
+      "EC": "231-151-2",
+      "critical-raw-material": "yes",
+      "strategic-raw-material": "yes"
+    },
+    {
+      "material": "Trimethyl borate",
+      "CAS": "121-43-7",
+      "EC": "204-468-9",
+      "critical-raw-material": "yes",
+      "strategic-raw-material": "no"
+    },
+    {
+      "material": "Cobalt",
+      "CAS": "7440-48-4",
+      "EC": "231-158-0",
+      "critical-raw-material": "yes",
+      "strategic-raw-material": "yes"
+    },
+    {
+      "material": "Coke (coal)",
+      "CAS": "65996-77-2",
+      "EC": "266-010-4",
+      "critical-raw-material": "yes",
+      "strategic-raw-material": "no"
+    },
+    {
+      "material": "Feldspar-group minerals",
+      "CAS": "68476-25-5",
+      "EC": "270-666-7",
+      "critical-raw-material": "yes",
+      "strategic-raw-material": "no"
+    },
+    {
+      "material": "Calcium fluoride",
+      "CAS": "7789-75-5",
+      "EC": "232-188-7",
+      "critical-raw-material": "yes",
+      "strategic-raw-material": "no"
+    },
+    {
+      "material": "Gallium",
+      "CAS": "7440-55-3",
+      "EC": "231-163-8",
+      "critical-raw-material": "yes",
+      "strategic-raw-material": "yes"
+    },
+    {
+      "material": "Germanium",
+      "CAS": "7440-56-4",
+      "EC": "231-164-3",
+      "critical-raw-material": "yes",
+      "strategic-raw-material": "yes"
+    },
+    {
+      "material": "Hafnium",
+      "CAS": "7440-58-6",
+      "EC": "231-166-4",
+      "critical-raw-material": "yes",
+      "strategic-raw-material": "no"
+    },
+    {
+      "material": "Helium",
+      "CAS": "7440-59-7",
+      "EC": "231-168-5",
+      "critical-raw-material": "yes",
+      "strategic-raw-material": "no"
+    },
+    {
+      "material": "Gadolinium (HREE)",
+      "CAS": "7440-54-2",
+      "EC": "231-162-2",
+      "critical-raw-material": "yes",
+      "strategic-raw-material": "yes"
+    },
+    {
+      "material": "Terbium (HREE)",
+      "CAS": "7440-27-9",
+      "EC": "231-137-6",
+      "critical-raw-material": "yes",
+      "strategic-raw-material": "yes"
+    },
+    {
+      "material": "Dysprosium (HREE)",
+      "CAS": "7429-91-6",
+      "EC": "231-073-9",
+      "critical-raw-material": "yes",
+      "strategic-raw-material": "yes"
+    },
+    {
+      "material": "Holmium (HREE)",
+      "CAS": "7440-60-0",
+      "EC": "231-169-0",
+      "critical-raw-material": "yes",
+      "strategic-raw-material": "yes"
+    },
+    {
+      "material": "Erbium trifluoride (HREE)",
+      "CAS": "13760-83-3",
+      "EC": "237-356-3",
+      "critical-raw-material": "yes",
+      "strategic-raw-material": "yes"
+    },
+    {
+      "material": "Thulium oxide (HREE)",
+      "CAS": "12036-44-1",
+      "EC": "234-851-6",
+      "critical-raw-material": "yes",
+      "strategic-raw-material": "yes"
+    },
+    {
+      "material": "Ytterbium (III) oxide (HREE)",
+      "CAS": "1314-37-0",
+      "EC": "215-234-0",
+      "critical-raw-material": "yes",
+      "strategic-raw-material": "yes"
+    },
+    {
+      "material": "Lutetium oxide (HREE)",
+      "CAS": "12032-20-1",
+      "EC": "234-764-3",
+      "critical-raw-material": "yes",
+      "strategic-raw-material": "yes"
+    },
+    {
+      "material": "Lithium",
+      "CAS": "7439-93-2",
+      "EC": "231-102-5",
+      "critical-raw-material": "yes",
+      "strategic-raw-material": "yes"
+    },
+    {
+      "material": "Lanthanum (LREE)",
+      "CAS": "7439-91-0",
+      "EC": "231-099-0",
+      "critical-raw-material": "yes",
+      "strategic-raw-material": "yes"
+    },
+    {
+      "material": "Cerium (LREE)",
+      "CAS": "7440-45-1",
+      "EC": "231-154-9",
+      "critical-raw-material": "yes",
+      "strategic-raw-material": "yes"
+    },
+    {
+      "material": "Praseodymium (LREE)",
+      "CAS": "7440-10-0",
+      "EC": "231-120-3",
+      "critical-raw-material": "yes",
+      "strategic-raw-material": "yes"
+    },
+    {
+      "material": "Neodymium (LREE)",
+      "CAS": "7440-00-8",
+      "EC": "231-109-3",
+      "critical-raw-material": "yes",
+      "strategic-raw-material": "yes"
+    },
+    {
+      "material": "Promethium (LREE)",
+      "CAS": "7440-12-2",
+      "EC": "231-121-9",
+      "critical-raw-material": "yes",
+      "strategic-raw-material": "yes"
+    },
+    {
+      "material": "Samarium (LREE)",
+      "CAS": "7440-19-9",
+      "EC": "231-128-7",
+      "critical-raw-material": "yes",
+      "strategic-raw-material": "yes"
+    },
+    {
+      "material": "Europium (LREE)",
+      "CAS": "7440-53-1",
+      "EC": "231-161-7",
+      "critical-raw-material": "yes",
+      "strategic-raw-material": "yes"
+    },
+    {
+      "material": "Magnesium",
+      "CAS": "7439-95-4",
+      "EC": "231-104-6",
+      "critical-raw-material": "yes",
+      "strategic-raw-material": "yes"
+    },
+    {
+      "material": "Manganese",
+      "CAS": "7439-96-5",
+      "EC": "231-105-1",
+      "critical-raw-material": "yes",
+      "strategic-raw-material": "yes"
+    },
+    {
+      "material": "Natural graphite",
+      "CAS": "7782-42-5",
+      "EC": "231-955-3",
+      "critical-raw-material": "yes",
+      "strategic-raw-material": "yes"
+    },
+    {
+      "material": "Niobium",
+      "CAS": "7440-03-1",
+      "EC": "231-113-5",
+      "critical-raw-material": "yes",
+      "strategic-raw-material": "no"
+    },
+    {
+      "material": "Ruthenium (PGM)",
+      "CAS": "7440-18-8",
+      "EC": "231-127-1",
+      "critical-raw-material": "yes",
+      "strategic-raw-material": "yes"
+    },
+    {
+      "material": "Rhodium (PGM)",
+      "CAS": "7440-16-6",
+      "EC": "231-125-0",
+      "critical-raw-material": "yes",
+      "strategic-raw-material": "yes"
+    },
+    {
+      "material": "Palladium (PGM)",
+      "CAS": "7440-05-3",
+      "EC": "231-115-6",
+      "critical-raw-material": "yes",
+      "strategic-raw-material": "yes"
+    },
+    {
+      "material": "Osmium tetraoxide (PGM)",
+      "CAS": "20816-12-0",
+      "EC": "244-058-7",
+      "critical-raw-material": "yes",
+      "strategic-raw-material": "yes"
+    },
+    {
+      "material": "Iridium (PGM)",
+      "CAS": "7439-88-5",
+      "EC": "231-095-9",
+      "critical-raw-material": "yes",
+      "strategic-raw-material": "yes"
+    },
+    {
+      "material": "Platinum (PGM)",
+      "CAS": "7440-06-4",
+      "EC": "231-116-1",
+      "critical-raw-material": "yes",
+      "strategic-raw-material": "yes"
+    },
+    {
+      "material": "Phosphate rock",
+      "CAS": "65996-94-3",
+      "EC": "266-029-8",
+      "critical-raw-material": "yes",
+      "strategic-raw-material": "no"
+    },
+    {
+      "material": "Copper",
+      "CAS": "7440-50-8",
+      "EC": "231-159-6",
+      "critical-raw-material": "no",
+      "strategic-raw-material": "yes"
+    },
+    {
+      "material": "Phosphorus",
+      "CAS": "7723-14-0",
+      "EC": "231-768-7",
+      "critical-raw-material": "yes",
+      "strategic-raw-material": "no"
+    },
+    {
+      "material": "Scandium",
+      "CAS": "7440-20-2",
+      "EC": "231-129-2",
+      "critical-raw-material": "yes",
+      "strategic-raw-material": "no"
+    },
+    {
+      "material": "Silicon metal",
+      "CAS": "7440-21-3",
+      "EC": "231-130-8",
+      "critical-raw-material": "yes",
+      "strategic-raw-material": "yes"
+    },
+    {
+      "material": "Strontium",
+      "CAS": "7440-24-6",
+      "EC": "231-133-4",
+      "critical-raw-material": "yes",
+      "strategic-raw-material": "no"
+    },
+    {
+      "material": "Tantalum",
+      "CAS": "7440-25-7",
+      "EC": "231-135-5",
+      "critical-raw-material": "yes",
+      "strategic-raw-material": "no"
+    },
+    {
+      "material": "Titanium metal",
+      "CAS": "7440-32-6",
+      "EC": "231-142-3",
+      "critical-raw-material": "yes",
+      "strategic-raw-material": "yes"
+    },
+    {
+      "material": "Tungsten",
+      "CAS": "7440-33-7",
+      "EC": "231-143-9",
+      "critical-raw-material": "yes",
+      "strategic-raw-material": "yes"
+    },
+    {
+      "material": "Vanadium",
+      "CAS": "7440-62-2",
+      "EC": "231-171-1",
+      "critical-raw-material": "yes",
+      "strategic-raw-material": "no"
+    },
+    {
+      "material": "Nickel",
+      "CAS": "7440-02-0",
+      "EC": "231-111-4",
+      "critical-raw-material": "no",
+      "strategic-raw-material": "yes"
+    }
+  ]    
+}

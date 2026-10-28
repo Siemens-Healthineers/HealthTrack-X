@@ -1,0 +1,5 @@
+# Ignore generated YAML configuration
+github_config.yaml
+
+# Keep template
+!github_config.yaml.template

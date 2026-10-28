@@ -1,0 +1,308 @@
+{
+  "realm": "healthtrack-x",
+  "enabled": true,
+  "displayName": "HealthTrack-X",
+  "displayNameHtml": "<span style=\"font-size:1.25rem;font-weight:700;color:#FAFAFA;font-family:Segoe UI,sans-serif;\">HealthTrack-X</span>",
+  "loginTheme": "healthtrackx",
+  "registrationAllowed": true,
+  "loginWithEmailAllowed": true,
+  "duplicateEmailsAllowed": false,
+  "resetPasswordAllowed": true,
+  "rememberMe": true,
+  "otpPolicyType": "totp",
+  "otpPolicyAlgorithm": "HmacSHA1",
+  "otpPolicyDigits": 6,
+  "otpPolicyPeriod": 30,
+  "otpPolicyInitialCounter": 0,
+  "otpPolicyLookAheadWindow": 1,
+  "otpSupportedApplications": [
+    "totpAppGoogleName",
+    "totpAppMicrosoftAuthenticatorName",
+    "totpAppFreeOTPName"
+  ],
+  "requiredActions": [
+    {
+      "alias": "CONFIGURE_TOTP",
+      "name": "Configure OTP",
+      "providerId": "CONFIGURE_TOTP",
+      "enabled": true,
+      "defaultAction": false,
+      "priority": 10
+    },
+    {
+      "alias": "UPDATE_PASSWORD",
+      "name": "Update Password",
+      "providerId": "UPDATE_PASSWORD",
+      "enabled": true,
+      "defaultAction": false,
+      "priority": 30
+    },
+    {
+      "alias": "VERIFY_EMAIL",
+      "name": "Verify Email",
+      "providerId": "VERIFY_EMAIL",
+      "enabled": true,
+      "defaultAction": false,
+      "priority": 50
+    }
+  ],
+  "authenticationFlows": [
+    {
+      "alias": "htx-browser",
+      "description": "Browser flow with conditional OTP (only if user has OTP configured)",
+      "providerId": "basic-flow",
+      "topLevel": true,
+      "builtIn": false,
+      "authenticationExecutions": [
+        {
+          "authenticator": "auth-cookie",
+          "authenticatorFlow": false,
+          "requirement": "ALTERNATIVE",
+          "priority": 10
+        },
+        {
+          "authenticatorFlow": true,
+          "requirement": "ALTERNATIVE",
+          "priority": 20,
+          "flowAlias": "htx-browser-forms"
+        }
+      ]
+    },
+    {
+      "alias": "htx-browser-forms",
+      "description": "Username/password + conditional OTP",
+      "providerId": "basic-flow",
+      "topLevel": false,
+      "builtIn": false,
+      "authenticationExecutions": [
+        {
+          "authenticator": "auth-username-password-form",
+          "authenticatorFlow": false,
+          "requirement": "REQUIRED",
+          "priority": 10
+        },
+        {
+          "authenticatorFlow": true,
+          "requirement": "CONDITIONAL",
+          "priority": 20,
+          "flowAlias": "htx-browser-conditional-otp"
+        }
+      ]
+    },
+    {
+      "alias": "htx-browser-conditional-otp",
+      "description": "OTP only if user has it configured",
+      "providerId": "basic-flow",
+      "topLevel": false,
+      "builtIn": false,
+      "authenticationExecutions": [
+        {
+          "authenticator": "conditional-user-configured",
+          "authenticatorFlow": false,
+          "requirement": "REQUIRED",
+          "priority": 10
+        },
+        {
+          "authenticator": "auth-otp-form",
+          "authenticatorFlow": false,
+          "requirement": "REQUIRED",
+          "priority": 20
+        }
+      ]
+    }
+  ],
+  "browserFlow": "htx-browser",
+  "roles": {
+    "realm": [
+      {
+        "name": "default-roles-healthtrack-x",
+        "description": "Composite role assigned to every new user (does NOT include viewer).",
+        "composite": true,
+        "composites": {
+          "realm": ["offline_access"]
+        }
+      },
+      {
+        "name": "viewer",
+        "description": "Read-only demonstrator access. Must be granted by an admin."
+      },
+      {
+        "name": "editor",
+        "description": "Can create and update HealthTrack-X data."
+      },
+      {
+        "name": "admin",
+        "description": "Can administer HealthTrack-X demonstrator settings."
+      },
+      {
+        "name": "service",
+        "description": "Technical role for scripts, MCP and service-to-service calls."
+      }
+    ]
+  },
+  "defaultRole": {
+    "name": "default-roles-healthtrack-x"
+  },
+  "clients": [
+    {
+      "clientId": "healthtrackx-frontend",
+      "name": "HealthTrack-X Frontend (Local Demonstrator)",
+      "enabled": true,
+      "protocol": "openid-connect",
+      "publicClient": true,
+      "standardFlowEnabled": true,
+      "implicitFlowEnabled": false,
+      "directAccessGrantsEnabled": false,
+      "serviceAccountsEnabled": false,
+      "authorizationServicesEnabled": false,
+      "frontchannelLogout": true,
+      "rootUrl": "http://htx.local",
+      "baseUrl": "http://htx.local",
+      "redirectUris": [
+        "http://localhost:5173/*",
+        "http://localhost:5174/*",
+        "http://localhost:3000/*",
+        "http://127.0.0.1:5173/*",
+        "http://127.0.0.1:5174/*",
+        "http://127.0.0.1:3000/*",
+        "http://htx.local/*"
+      ],
+      "webOrigins": [
+        "http://localhost:5173",
+        "http://localhost:5174",
+        "http://localhost:3000",
+        "http://127.0.0.1:5173",
+        "http://127.0.0.1:5174",
+        "http://127.0.0.1:3000",
+        "http://htx.local"
+      ],
+      "attributes": {
+        "pkce.code.challenge.method": "S256",
+        "post.logout.redirect.uris": "http://localhost:5173/*##http://localhost:5173##http://localhost:5174/*##http://localhost:5174##http://localhost:3000/*##http://localhost:3000##http://127.0.0.1:5173/*##http://127.0.0.1:5173##http://127.0.0.1:5174/*##http://127.0.0.1:5174##http://127.0.0.1:3000/*##http://127.0.0.1:3000##http://htx.local/*##http://htx.local"
+      },
+      "protocolMappers": [
+        {
+          "name": "healthtrackx-backend-audience",
+          "protocol": "openid-connect",
+          "protocolMapper": "oidc-audience-mapper",
+          "consentRequired": false,
+          "config": {
+            "included.client.audience": "healthtrackx-backend",
+            "id.token.claim": "false",
+            "access.token.claim": "true",
+            "introspection.token.claim": "true",
+            "userinfo.token.claim": "false"
+          }
+        },
+        {
+          "name": "realm-roles",
+          "protocol": "openid-connect",
+          "protocolMapper": "oidc-usermodel-realm-role-mapper",
+          "consentRequired": false,
+          "config": {
+            "multivalued": "true",
+            "claim.name": "realm_access.roles",
+            "jsonType.label": "String",
+            "id.token.claim": "true",
+            "access.token.claim": "true",
+            "introspection.token.claim": "true",
+            "userinfo.token.claim": "true"
+          }
+        }
+      ]
+    },
+    {
+      "clientId": "healthtrackx-backend",
+      "name": "HealthTrack-X Backend API (Local Demonstrator)",
+      "enabled": true,
+      "protocol": "openid-connect",
+      "publicClient": false,
+      "standardFlowEnabled": false,
+      "implicitFlowEnabled": false,
+      "directAccessGrantsEnabled": false,
+      "serviceAccountsEnabled": true,
+      "authorizationServicesEnabled": false,
+      "secret": "${KEYCLOAK_ADMIN_CLIENT_SECRET}",
+      "redirectUris": [],
+      "webOrigins": [],
+      "attributes": {}
+    }
+  ],
+  "users": [
+    {
+      "username": "htx-admin",
+      "enabled": true,
+      "emailVerified": true,
+      "firstName": "HealthTrack",
+      "lastName": "Admin",
+      "email": "htx-admin@example.local",
+      "credentials": [
+        {
+          "type": "password",
+          "value": "htx-admin",
+          "temporary": false
+        }
+      ],
+      "realmRoles": [
+        "viewer",
+        "editor",
+        "admin"
+      ],
+      "requiredActions": [
+        "CONFIGURE_TOTP"
+      ]
+    },
+    {
+      "username": "htx-dev",
+      "enabled": true,
+      "emailVerified": true,
+      "firstName": "HealthTrack",
+      "lastName": "Developer",
+      "email": "htx-dev@example.local",
+      "credentials": [
+        {
+          "type": "password",
+          "value": "htx-dev",
+          "temporary": false
+        }
+      ],
+      "realmRoles": [
+        "viewer",
+        "editor",
+        "admin"
+      ],
+      "requiredActions": []
+    },
+    {
+      "username": "htx-viewer",
+      "enabled": true,
+      "emailVerified": true,
+      "firstName": "HealthTrack",
+      "lastName": "Viewer",
+      "email": "htx-viewer@example.local",
+      "credentials": [
+        {
+          "type": "password",
+          "value": "htx-viewer",
+          "temporary": false
+        }
+      ],
+      "realmRoles": [
+        "viewer"
+      ],
+      "requiredActions": []
+    },
+    {
+      "username": "service-account-healthtrackx-backend",
+      "enabled": true,
+      "serviceAccountClientId": "healthtrackx-backend",
+      "clientRoles": {
+        "realm-management": [
+          "view-users",
+          "manage-users",
+          "query-users"
+        ]
+      }
+    }
+  ]
+}
